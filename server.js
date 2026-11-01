@@ -21,10 +21,18 @@ function loadEnv() {
   return out;
 }
 const env = loadEnv();
-const API_KEY = env.BAILIAN_API_KEY || env.SILICONFLOW_API_KEY || '';
-const BASE_URL = (env.BAILIAN_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1').replace(/\/+$/, '');
-const VISION_MODEL = env.VISION_MODEL || 'qwen3-vl-plus';
-const TEXT_MODEL = env.TEXT_MODEL || 'qwen3.8-max';
+// 云端部署时没有 .env 文件，配置走环境变量；本地仍以 .env 优先。
+function pick(...names) {
+  for (const n of names) {
+    if (env[n]) return env[n];
+    if (process.env[n]) return process.env[n];
+  }
+  return '';
+}
+const API_KEY = pick('BAILIAN_API_KEY', 'SILICONFLOW_API_KEY');
+const BASE_URL = (pick('BAILIAN_BASE_URL') || 'https://dashscope.aliyuncs.com/compatible-mode/v1').replace(/\/+$/, '');
+const VISION_MODEL = pick('VISION_MODEL') || 'qwen3-vl-plus';
+const TEXT_MODEL = pick('TEXT_MODEL') || 'qwen3.8-max';
 const PORT = parseInt(process.env.PORT || '8787', 10);
 
 const MIME = {
