@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: memoai
+    runtime: node
+    plan: free
+    buildCommand: echo "no build step (zero npm deps)"
+    startCommand: node server.js
+    envVars:
+      - key: BAILIAN_API_KEY
+        sync: false
+      - key: BAILIAN_BASE_URL
+        value: https://ws-zvxhby5h5t6ub0ji.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+      - key: VISION_MODEL
+        value: qwen3-vl-plus
+      - key: TEXT_MODEL
+        value: qwen3.8-max
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_VERSION
+        value: 20.11.0
